@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Modal } from './components/Modal';
 import { TodoForm } from './components/TodoForm';
 import { TodoList } from './components/TodoList';
+import Button from './components/Button';
+import { List, NotebookPen } from 'lucide-react';
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -11,39 +13,40 @@ function App() {
     title: '',
     tasks: [''],
   });
-  const [showTitleError, setShowTitleError] = useState(false);
 
-  const handleCreateTodo = () => {
-    if (!newTodoData.title.trim()) {
-      setShowTitleError(true);
-      return;
-    }
+
+  const handleCreateTodo = (e) => {
+    e.preventDefault()
 
     const newTodo = {
       id: crypto.randomUUID(),
       title: newTodoData.title.trim(),
       tasks: newTodoData.tasks.filter(task => task.trim()),
     };
-    
+
     setTodos(prev => [...prev, newTodo]);
     setNewTodoData({ title: '', tasks: [''] });
-    setShowTitleError(false);
   };
 
-  const handleUpdateTodo = (formData) => {
+  const handleUpdateTodo = () => {
+    e.preventDefault()
+
     if (!editingTodo) return;
-    
-    setTodos(prev =>
-      prev.map(todo =>
-        todo.id === editingTodo.id
-          ? {
-              ...todo,
-              title: formData.title.trim(),
-              tasks: formData.tasks.filter(task => task.trim()),
-            }
-          : todo
-      )
-    );
+
+    const temp = [...todos]
+    const updatedTodos = temp.map(todo => {
+      if (todo.id === editingTodo.id)
+        return {
+          ...todo,
+          title: editingTodo.title.trim(),
+          tasks: editingTodo.tasks.filter(task => task.trim()),
+        }
+      else {
+        return todo
+      }
+    })
+
+    setTodos(updatedTodos)
     setIsModalOpen(false);
     setEditingTodo(null);
   };
@@ -64,28 +67,27 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-100 py-8">
-      <div className="max-w-3xl mx-auto px-4">
-        <header className="mb-8">
-          <h1 className="text-5xl font-bold text-center text-blue-500 mb-8">
+      <div className="max-w-lg mx-auto px-4">
+        <div className="flex justify-center items-end gap-x-4 mb-5 bg-blue-500  text-gray-50 rounded-lg pt-5 pb-6">
+          <h1 className="text-4xl font-bold ">
             Todo App
           </h1>
-        </header>
+          <NotebookPen size={40} />
+        </div>
 
-        <div className="bg-white  p-6 rounded-lg shadow-lg border mb-8">
-          <h2 className="text-2xl font-semibold text-white mb-4">Create New Todo</h2>
-          <TodoForm
-            mode="create"
-            formData={newTodoData}
-            setFormData={setNewTodoData}
-            showTitleError={showTitleError}
-            setShowTitleError={setShowTitleError}
-          />
-          <button
-            onClick={handleCreateTodo}
-            className="w-full mt-4 p-3 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Create Todo
-          </button>
+        <div className="bg-white  px-6 py-3 rounded-lg shadow-lg border mb-8">
+          <form onSubmit={handleCreateTodo}>
+
+            <TodoForm
+              formData={newTodoData}
+              setFormData={setNewTodoData}
+            />
+            <div className='w-full flex justify-center mt-5'>
+              <Button type='submit' className='px-6 bg-green-500'>
+                Create Todo
+              </Button>
+            </div>
+          </form>
         </div>
 
         <TodoList
@@ -98,20 +100,17 @@ function App() {
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           title="Edit Todo"
-          primaryAction={{
-            label: 'Update Todo',
-            onClick: () => handleUpdateTodo(editingTodo),
-          }}
-          secondaryAction={{
-            label: 'Cancel',
-            onClick: handleCloseModal,
-          }}
+
         >
-          <TodoForm
-            mode="edit"
-            formData={editingTodo}
-            setFormData={setEditingTodo}
-          />
+          <form onSubmit={handleUpdateTodo}>
+            <TodoForm
+              formData={editingTodo}
+              setFormData={setEditingTodo}
+            />
+            <Button type='submit'>
+              Update Todo
+            </Button>
+          </form>
         </Modal>
       </div>
     </div>

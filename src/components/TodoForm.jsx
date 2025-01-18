@@ -1,17 +1,13 @@
 import { Plus, Trash2, AlertTriangle as TriangleAlert } from 'lucide-react';
+import Input from './Input';
+import Button from './Button';
 
-export function TodoForm({ 
-  mode, 
-  formData, 
+export function TodoForm({
+  formData,
   setFormData,
-  showTitleError,
-  setShowTitleError 
 }) {
   const handleTitleChange = (e) => {
     setFormData(prev => ({ ...prev, title: e.target.value }));
-    if (setShowTitleError) {
-      setShowTitleError(false);
-    }
   };
 
   const handleTaskChange = (value, index) => {
@@ -40,15 +36,12 @@ export function TodoForm({
       <div className="space-y-2">
         <label className="font-medium text-2xl block">Title</label>
         <div className="flex items-center gap-2">
-          <input
+          <Input
             value={formData.title}
             onChange={handleTitleChange}
-            placeholder="Enter todo title"
-            className="flex-1 p-2 border rounded-md focus:outline-blue-400 focus:ring-blue-400"
+            placeholder={'Enter todo title'}
+            required
           />
-          {showTitleError && (
-            <TriangleAlert className="text-yellow-500" size={24} />
-          )}
         </div>
       </div>
 
@@ -57,27 +50,21 @@ export function TodoForm({
         <div className="space-y-2">
           {formData.tasks.map((task, index) => (
             <div key={index} className="flex items-center gap-2">
-              <input
+              <Input
                 value={task}
                 onChange={e => handleTaskChange(e.target.value, index)}
                 placeholder="Enter task description"
-                className="flex-1 p-2 border rounded-md focus:outline-blue-400 focus:ring-blue-400"
+                required
               />
-              <button
-                onClick={() => removeTask(index)}
-                className="p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors"
-                aria-label="Remove task"
-              >
+
+              <Button onClick={() => removeTask(index)} >
                 <Trash2 size={20} />
-              </button>
+              </Button>
+
               {index === formData.tasks.length - 1 && (
-                <button
-                  onClick={addTask}
-                  className="p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors"
-                  aria-label="Add task"
-                >
+                <Button onClick={addTask}>
                   <Plus size={20} />
-                </button>
+                </Button>
               )}
             </div>
           ))}
