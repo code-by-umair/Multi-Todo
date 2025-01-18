@@ -63,15 +63,15 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-800 to-gray-900 py-8">
+    <div className="min-h-screen bg-gray-100 py-8">
       <div className="max-w-3xl mx-auto px-4">
         <header className="mb-8">
-          <h1 className="text-5xl font-bold text-center text-white mb-8">
+          <h1 className="text-5xl font-bold text-center text-blue-500 mb-8">
             Todo App
           </h1>
         </header>
 
-        <div className="bg-white bg-opacity-30 backdrop-blur-lg p-6 rounded-lg shadow-lg border mb-8">
+        <div className="bg-white  p-6 rounded-lg shadow-lg border mb-8">
           <h2 className="text-2xl font-semibold text-white mb-4">Create New Todo</h2>
           <TodoForm
             mode="create"
