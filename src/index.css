@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* For modern browsers */
+::-webkit-scrollbar {
+    width: 3px;
+    /* Adjust width for vertical scrollbar */
+    height: 3px;
+    /* Adjust height for horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(155, 122, 245);
+    border-radius: 12px;
+    /* Makes the thumb rounded */
+}
+
+/* For Firefox */
+* {
+    scrollbar-width: thin;
+    /* Makes scrollbar thin */
+    scrollbar-color:  rgb(155, 122, 245) transparent;
+}

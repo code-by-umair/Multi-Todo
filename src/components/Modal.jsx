@@ -5,8 +5,6 @@ export function Modal({
   onClose,
   title,
   children,
-  primaryAction,
-  secondaryAction,
 }) {
   if (!isOpen) return null;
 
@@ -35,26 +33,7 @@ export function Modal({
 
         <div className="p-4">{children}</div>
 
-        {(primaryAction || secondaryAction) && (
-          <div className="flex justify-end gap-2 p-4 border-t">
-            {secondaryAction && (
-              <button
-                onClick={secondaryAction.onClick}
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-              >
-                {secondaryAction.label}
-              </button>
-            )}
-            {primaryAction && (
-              <button
-                onClick={primaryAction.onClick}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
-              >
-                {primaryAction.label}
-              </button>
-            )}
-          </div>
-        )}
+      
       </div>
     </div>
   );
